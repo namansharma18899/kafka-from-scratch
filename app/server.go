@@ -27,6 +27,11 @@ func main() {
 		os.Exit(1)
 	}
 	buffer := make([]byte, 1024)
-	conn.Read(buffer)
-	conn.Write([]byte{0, 0, 0, 0, 0, 0, 0, 7})
+	_, err = conn.Read(buffer)
+	// Correlation_id starts from the 8th byte to 12th byte
+	conn.Write([]byte{0})
+	conn.Write(buffer[8:12])
+	if err != nil {
+		panic("filaed")
+	}
 }
