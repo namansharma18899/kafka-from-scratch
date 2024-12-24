@@ -29,9 +29,9 @@ func main() {
 	}
 	buffer := make([]byte, 1024)
 	_, err = conn.Read(buffer)
-	response := make([]byte, 12)                  // message length
+	response := make([]byte, 1)                   // message length
 	copy(response[4:8], buffer[8:12])             // correlation id
-	binary.BigEndian.PutUint16(response[8:], 0)   // error code
-	binary.BigEndian.PutUint16(response[10:], 18) // error code
+	binary.BigEndian.PutUint16(response[8:10], 0) // error code
+	binary.BigEndian.PutUint16(response[10:], 5)  // error code
 	conn.Write(response)
 }
