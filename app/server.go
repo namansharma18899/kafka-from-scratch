@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/binary"
 	"fmt"
 	"net"
 	"os"
@@ -28,11 +29,12 @@ func main() {
 	}
 	buffer := make([]byte, 1024)
 	_, err = conn.Read(buffer)
-	requestApiVersion := buffer[6:8]
-	fmt.Println("version -> ", requestApiVersion)
+	// requestApiVersion := buffer[6:8]
+	// fmt.Println("version -> ", requestApiVersion)
 	response := make([]byte, 10)
 	copy(response[4:8], buffer[8:12])
-	response[8] = 35
+	binary.BigEndian.PutUint16(response[8:], 35)
+	// response[8] = 35
 	conn.Write(response)
 	// copy(response[8:], 35)
 	// if requestApiVersion
