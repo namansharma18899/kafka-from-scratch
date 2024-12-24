@@ -28,14 +28,18 @@ func main() {
 	}
 	buffer := make([]byte, 1024)
 	_, err = conn.Read(buffer)
-	// Correlation_id starts from the 8th byte to 12th byte
-	response := make([]byte, 8)
-	// response = []byte{0, 0, 0, 0}
-	copy(response[4:], buffer[8:12])
-	// response[4:] = buffer[8:12]
-	// conn.Write([]byte{0})
+	requestApiVersion := buffer[6:8]
+	fmt.Println("version -> ", requestApiVersion)
+	response := make([]byte, 10)
+	copy(response[4:8], buffer[8:12])
+	response[8] = 35
 	conn.Write(response)
-	if err != nil {
-		panic("filaed")
-	}
+	// copy(response[8:], 35)
+	// if requestApiVersion
+	// response := make([]byte, 8)
+	// copy(response[4:], buffer[8:12])
+	// conn.Write(response)
+	// if err != nil {
+	// 	panic("filaed")
+	// }
 }
