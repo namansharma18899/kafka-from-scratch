@@ -43,11 +43,21 @@ func main() {
 		fmt.Println("Failed to bind to port 9092")
 		os.Exit(1)
 	}
-	c, err := l.Accept()
-	if err != nil {
-		fmt.Println("Error accepting connection: ", err.Error())
-		os.Exit(1)
+
+	for {
+		// Accept an incoming connection
+		conn, err := l.Accept()
+		if err != nil {
+			fmt.Println("Error accepting connection:", err)
+			continue
+		}
+
+		// Handle the connection in a separate goroutine
+		go handleConnection(conn)
 	}
+}
+
+func handleConnection(c net.Conn) {
 	m, err := Read(c)
 	if err != nil {
 		fmt.Println("Error reading message: ", err.Error())
