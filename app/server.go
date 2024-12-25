@@ -59,6 +59,7 @@ func main() {
 
 func handleConnection(c net.Conn) {
 	m, err := Read(c)
+
 	if err != nil {
 		fmt.Println("Error reading message: ", err.Error())
 		os.Exit(1)
