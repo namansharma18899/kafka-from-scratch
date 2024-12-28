@@ -35,24 +35,26 @@ func startServer() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		fmt.Println(req)
-		res := bytes.NewBuffer([]byte{})
-		binary.Write(res, binary.BigEndian, uint32(req.CorrelationID))
-		var errorCode = uint16(0)
-		if int(req.ApiVersion) < 0 || int(req.ApiVersion) > 4 {
-			errorCode = 35
-		}
-		binary.Write(res, binary.BigEndian, uint16(errorCode))
-		binary.Write(res, binary.BigEndian, byte(2))
-		binary.Write(res, binary.BigEndian, uint16(18))
-		binary.Write(res, binary.BigEndian, uint16(3))
-		binary.Write(res, binary.BigEndian, uint16(4))
-		res.Write(TAG_BUFFER)
-		binary.Write(res, binary.BigEndian, uint32(0))
-		res.Write(TAG_BUFFER)
+		go func() {
+			fmt.Println(req)
+			res := bytes.NewBuffer([]byte{})
+			binary.Write(res, binary.BigEndian, uint32(req.CorrelationID))
+			var errorCode = uint16(0)
+			if int(req.ApiVersion) < 0 || int(req.ApiVersion) > 4 {
+				errorCode = 35
+			}
+			binary.Write(res, binary.BigEndian, uint16(errorCode))
+			binary.Write(res, binary.BigEndian, byte(2))
+			binary.Write(res, binary.BigEndian, uint16(18))
+			binary.Write(res, binary.BigEndian, uint16(3))
+			binary.Write(res, binary.BigEndian, uint16(4))
+			res.Write(TAG_BUFFER)
+			binary.Write(res, binary.BigEndian, uint32(0))
+			res.Write(TAG_BUFFER)
 
-		binary.Write(conn, binary.BigEndian, uint32(res.Len()))
-		io.Copy(conn, res)
+			binary.Write(conn, binary.BigEndian, uint32(res.Len()))
+			io.Copy(conn, res)
+		}()
 	}
 }
 
