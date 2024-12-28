@@ -50,6 +50,7 @@ func startServer() {
 		res.Write(TAG_BUFFER)
 		binary.Write(res, binary.BigEndian, uint32(0))
 		res.Write(TAG_BUFFER)
+
 		binary.Write(conn, binary.BigEndian, uint32(res.Len()))
 		io.Copy(conn, res)
 	}
