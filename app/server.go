@@ -36,7 +36,7 @@ func startServer() {
 			log.Fatal(err)
 		}
 		go func() {
-			fmt.Println(req)
+			fmt.Println("Req -> ", req)
 			res := bytes.NewBuffer([]byte{})
 			binary.Write(res, binary.BigEndian, uint32(req.CorrelationID))
 			var errorCode = uint16(0)
