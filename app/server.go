@@ -82,5 +82,6 @@ func handleConnection(c net.Conn) {
 	out[13] = 0                             // _tagged_fields
 	binary.BigEndian.PutUint32(out[14:], 0) // throttle time
 	out[18] = 0
+
 	Send(c, out)
 }
