@@ -1,34 +1,47 @@
-[![progress-banner](https://backend.codecrafters.io/progress/kafka/c46e8cb1-1d0a-4266-8978-1dffac04252e)](https://app.codecrafters.io/users/codecrafters-bot?r=2qF)
+<div align='center'>
+<h1>Kafka from scratch 🛠️</h1>
+<!-- <img  src="https://github.com/namansharma18899/kafka-from-scratch/blob/master/assets/logo.svg"  height=250px> -->
+<hr>
 
-This is a starting point for Go solutions to the
-["Build Your Own Kafka" Challenge](https://codecrafters.io/challenges/kafka).
+### **✨ Kafka custom implementation from scratch... ✨**
 
-In this challenge, you'll build a toy Kafka clone that's capable of accepting
-and responding to APIVersions & Fetch API requests. You'll also learn about
-encoding and decoding messages using the Kafka wire protocol. You'll also learn
-about handling the network protocol, event loops, TCP sockets and more.
+![Code Size](https://img.shields.io/github/languages/code-size/namansharma18899/kafka-from-scratch)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/namansharma18899/kafka-from-scratch/blob/main/LICENSE)
+[![GitHub forks](https://img.shields.io/github/forks/namansharma18899/kafka-from-scratch)](https://github.com/namansharma18899/kafka-from-scratch/network)
+[![GitHub issues](https://img.shields.io/github/issues/namansharma18899/kafka-from-scratch)](https://github.com/namansharma18899/kafka-from-scratch/issues)
+[![Last Commit](https://img.shields.io/github/last-commit/namansharma18899/kafka-from-scratch)](https://github.com/namansharma18899/kafka-from-scratch/commits/main)
+<!-- [![GitHub stars](https://img.shields.io/github/stars/namansharma18899/kafka-from-scratch)](https://github.com/namansharma18899/kafka-from-scratch/stargazers) -->
 
-**Note**: If you're viewing this repo on GitHub, head over to
-[codecrafters.io](https://codecrafters.io) to try the challenge.
+---
 
-# Passing the first stage
+<!-- <img src="assets/new2.gif" height=400px> -->
+<!-- <a href="https://asciinema.org/a/lfN6S96DFs5KrkA6nhkrqp8jZ" target="_blank"><img src="https://asciinema.org/a/lfN6S96DFs5KrkA6nhkrqp8jZ.svg" /></a> -->
 
-The entry point for your Kafka implementation is in `app/server.go`. Study and
-uncomment the relevant code, and push your changes to pass the first stage:
+</div>
 
-```sh
-git commit -am "pass 1st stage" # any msg
-git push origin master
+---
+
+## 🌎 Overview
+Hey this is my custom implementation of apache kafka, We’ve just dipped our toes into the water.
+This repository is a hands-on guide to understanding and building Kafka-based systems, starting from the very basics to advanced use cases. 
+
+Could not have been possible without the help of <a href="https://app.codecrafters.io/courses/kafka/">CodeCrafters</a>
+
+<!-- 
+## Table on Contents
+- 🫧 [ Features](#features)
+- 🤨 [Why](#why)
+- ⚙️ [Setup](#setup)
+- 🤗 [Support](#support) -->
+
+## 🤨 Why
+- Self explanatory...
+
+## ⚙️ Setup
+```bash
+$ go build 
+$ ./your_program.sh
 ```
+## 🤗 Support
+- Make sure to leave a ⭐ if you like this project.
 
-That's all!
-
-# Stage 2 & beyond
-
-Note: This section is for stages 2 and beyond.
-
-1. Ensure you have `go (1.19)` installed locally
-1. Run `./your_program.sh` to run your Kafka broker, which is implemented in
-   `app/server.go`.
-1. Commit your changes and run `git push origin master` to submit your solution
-   to CodeCrafters. Test output will be streamed to your terminal.
