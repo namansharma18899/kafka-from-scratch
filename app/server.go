@@ -23,38 +23,43 @@ func startServer() {
 		fmt.Println("Failed to bind to port 9092")
 		os.Exit(1)
 	}
-	conn, err := l.Accept()
-	if err != nil {
-		fmt.Println("Error accepting connection: ", err.Error())
-		os.Exit(1)
-	}
-	defer conn.Close()
 
 	for {
-		req, err := NewReqFromConn(conn)
+		conn, err := l.Accept()
 		if err != nil {
-			log.Fatal(err)
+			fmt.Println("Error accepting connection: ", err.Error())
+			os.Exit(1)
 		}
-		go func() {
-			fmt.Println("Req -> ", req)
-			res := bytes.NewBuffer([]byte{})
-			binary.Write(res, binary.BigEndian, uint32(req.CorrelationID))
-			var errorCode = uint16(0)
-			if int(req.ApiVersion) < 0 || int(req.ApiVersion) > 4 {
-				errorCode = 35
-			}
-			binary.Write(res, binary.BigEndian, uint16(errorCode))
-			binary.Write(res, binary.BigEndian, byte(2))
-			binary.Write(res, binary.BigEndian, uint16(18))
-			binary.Write(res, binary.BigEndian, uint16(3))
-			binary.Write(res, binary.BigEndian, uint16(4))
-			res.Write(TAG_BUFFER)
-			binary.Write(res, binary.BigEndian, uint32(0))
-			res.Write(TAG_BUFFER)
+		defer conn.Close()
 
-			binary.Write(conn, binary.BigEndian, uint32(res.Len()))
-			io.Copy(conn, res)
-		}()
+		go func(conn net.Conn) {
+			for {
+				req, err := NewReqFromConn(conn)
+				if err != nil {
+					log.Fatal(err)
+				}
+				go func(conn net.Conn) {
+					fmt.Println("Req -> ", req)
+					res := bytes.NewBuffer([]byte{})
+					binary.Write(res, binary.BigEndian, uint32(req.CorrelationID))
+					var errorCode = uint16(0)
+					if int(req.ApiVersion) < 0 || int(req.ApiVersion) > 4 {
+						errorCode = 35
+					}
+					binary.Write(res, binary.BigEndian, uint16(errorCode))
+					binary.Write(res, binary.BigEndian, byte(2))
+					binary.Write(res, binary.BigEndian, uint16(18))
+					binary.Write(res, binary.BigEndian, uint16(3))
+					binary.Write(res, binary.BigEndian, uint16(4))
+					res.Write(TAG_BUFFER)
+					binary.Write(res, binary.BigEndian, uint32(0))
+					res.Write(TAG_BUFFER)
+
+					binary.Write(conn, binary.BigEndian, uint32(res.Len()))
+					io.Copy(conn, res)
+				}(conn)
+			}
+		}(conn)
 	}
 }
 
