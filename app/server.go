@@ -15,7 +15,7 @@ type messasgeSize struct {
 	messageSize int32
 }
 
-var SupportedApiVersions = []int32{1, 2, 3, 4}
+var SupportedApiVersions = []int32{0, 1, 2, 3, 4}
 
 type messageHeader struct {
 	requestApiKey     int16
