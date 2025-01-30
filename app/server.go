@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/binary"
 	"fmt"
 	"net"
 	"os"
@@ -9,6 +10,14 @@ import (
 // Ensures gofmt doesn't remove the "net" and "os" imports in stage 1 (feel free to remove this!)
 var _ = net.Listen
 var _ = os.Exit
+
+type messasgeSize struct {
+	messageSize int16
+}
+
+type messageHeader struct {
+	correlationId int32
+}
 
 func main() {
 	// You can use print statements as follows for debugging, they'll be visible when running tests.
@@ -21,9 +30,18 @@ func main() {
 		fmt.Println("Failed to bind to port 9092")
 		os.Exit(1)
 	}
-	_, err = l.Accept()
+	conn, err := l.Accept()
 	if err != nil {
 		fmt.Println("Error accepting connection: ", err.Error())
 		os.Exit(1)
 	}
+	handleConnection(conn)
+}
+
+func handleConnection(conn net.Conn) {
+	buff := make([]byte, 8)
+	binary.BigEndian.PutUint32(buff[:4], 0)
+	binary.BigEndian.PutUint32(buff[4:], 7)
+	fmt.Println("Sending buffer", buff)
+	conn.Write(buff)
 }
