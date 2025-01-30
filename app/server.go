@@ -15,6 +15,8 @@ type messasgeSize struct {
 	messageSize int32
 }
 
+var SupportedApiVersions = []int32{1, 2, 3, 4}
+
 type messageHeader struct {
 	requestApiKey     int16
 	requestApiVersion int16
@@ -38,12 +40,22 @@ func main() {
 	handleConnection(conn)
 }
 
+func validateApiVersion(inputBuffer []byte, responseBuffer []byte) int {
+	requestApiVersion := binary.BigEndian.Uint16(inputBuffer[6:8]) // api version
+	for val, _ := range SupportedApiVersions {
+		if int(requestApiVersion) == int(val) {
+			return 0
+		}
+	}
+	return 35 // unsupporered version
+}
+
 func parseRequest(conn net.Conn, buff []byte) {
 	inputRequestData := make([]byte, 1024)
 	conn.Read(inputRequestData)
-	binary.BigEndian.PutUint32(buff[:4], 0) // Message Size
-	fmt.Println("Got -> ", binary.BigEndian.Uint32(inputRequestData[8:12]))
-	binary.BigEndian.PutUint32(buff[4:8], binary.BigEndian.Uint32(inputRequestData[8:12])) //
+	binary.BigEndian.PutUint32(buff[:4], 0)                                                   // Message Size
+	binary.BigEndian.PutUint32(buff[6:8], uint32(validateApiVersion(inputRequestData, buff))) // Api Version
+	binary.BigEndian.PutUint32(buff[4:8], binary.BigEndian.Uint32(inputRequestData[8:12]))    //
 	conn.Write(buff)
 }
 
