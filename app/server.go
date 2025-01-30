@@ -12,19 +12,19 @@ var _ = net.Listen
 var _ = os.Exit
 
 type messasgeSize struct {
-	messageSize int16
+	messageSize int32
 }
 
 type messageHeader struct {
-	correlationId int32
+	requestApiKey     int16
+	requestApiVersion int16
+	correlationId     int32
+	clientId          []byte
+	tagBuffer         []byte
 }
 
 func main() {
-	// You can use print statements as follows for debugging, they'll be visible when running tests.
 	fmt.Println("Logs from your program will appear here!")
-
-	// Uncomment this block to pass the first stage
-	//
 	l, err := net.Listen("tcp", "0.0.0.0:9092")
 	if err != nil {
 		fmt.Println("Failed to bind to port 9092")
@@ -38,12 +38,16 @@ func main() {
 	handleConnection(conn)
 }
 
+func parseRequest(conn net.Conn, buff []byte) {
+	inputRequestData := make([]byte, 1024)
+	conn.Read(inputRequestData)
+	binary.BigEndian.PutUint32(buff[:4], 0) // Message Size
+	fmt.Println("Got -> ", binary.BigEndian.Uint32(inputRequestData[8:12]))
+	binary.BigEndian.PutUint32(buff[4:8], binary.BigEndian.Uint32(inputRequestData[8:12])) //
+	conn.Write(buff)
+}
+
 func handleConnection(conn net.Conn) {
 	buff := make([]byte, 1024)
-	read, _ := conn.Read(buff)
-	fmt.Println("REad -> ", read)
-	binary.BigEndian.PutUint32(buff[:4], 0)
-	binary.BigEndian.PutUint32(buff[4:8], 7)
-	fmt.Println("Sending buffer", buff)
-	conn.Write(buff)
+	parseRequest(conn, buff)
 }
