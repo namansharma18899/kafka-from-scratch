@@ -44,7 +44,7 @@ func validateApiVersion(inputBuffer []byte, responseBuffer []byte) int {
 	requestApiVersion := binary.BigEndian.Uint16(inputBuffer[6:8]) // api version
 	for val, _ := range SupportedApiVersions {
 		if int(requestApiVersion) == int(val) {
-			return 35
+			return 0
 		}
 	}
 	return 35 // unsupporered version
