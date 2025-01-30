@@ -44,7 +44,7 @@ func validateApiVersion(inputBuffer []byte, responseBuffer []byte) int {
 	requestApiVersion := binary.BigEndian.Uint16(inputBuffer[6:8]) // api version
 	for val, _ := range SupportedApiVersions {
 		if int(requestApiVersion) == int(val) {
-			return 0
+			return 35
 		}
 	}
 	return 35 // unsupporered version
@@ -53,9 +53,9 @@ func validateApiVersion(inputBuffer []byte, responseBuffer []byte) int {
 func parseRequest(conn net.Conn, buff []byte) {
 	inputRequestData := make([]byte, 1024)
 	conn.Read(inputRequestData)
-	binary.BigEndian.PutUint32(buff[:4], 0)                                                   // Message Size
-	binary.BigEndian.PutUint16(buff[6:8], uint16(validateApiVersion(inputRequestData, buff))) // Api Version
-	binary.BigEndian.PutUint32(buff[4:8], binary.BigEndian.Uint32(inputRequestData[8:12]))    //
+	binary.BigEndian.PutUint32(buff[:4], 0)                                                    // Message Size
+	binary.BigEndian.PutUint32(buff[4:8], binary.BigEndian.Uint32(inputRequestData[8:12]))     //
+	binary.BigEndian.PutUint16(buff[8:10], uint16(validateApiVersion(inputRequestData, buff))) // Api Version
 	conn.Write(buff)
 }
 
