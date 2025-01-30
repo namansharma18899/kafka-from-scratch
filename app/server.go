@@ -40,7 +40,8 @@ func main() {
 
 func handleConnection(conn net.Conn) {
 	buff := make([]byte, 8)
-	binary.BigEndian.PutUint32(buff[:4], 0)
+	binary.BigEndian.PutUint16(buff[:4], 0)
+
 	binary.BigEndian.PutUint32(buff[4:], 7)
 	fmt.Println("Sending buffer", buff)
 	conn.Write(buff)
