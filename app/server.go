@@ -53,11 +53,10 @@ func validateApiVersion(inputBuffer []byte, responseBuffer []byte) int {
 func parseRequest(conn net.Conn, buff []byte) {
 	inputRequestData := make([]byte, 1024)
 	conn.Read(inputRequestData)
-	binary.BigEndian.PutUint32(buff[:4], 0) // Message Size
-	fmt.Println("correlation id --> ", binary.BigEndian.Uint32(inputRequestData[8:12]))
-	binary.BigEndian.PutUint32(buff[4:8], binary.BigEndian.Uint32(inputRequestData[8:12])) //correlationid
-	// binary.BigEndian.PutUint16(buff[8:10], uint16(validateApiVersion(inputRequestData, buff))) // Error code
-	// binary.BigEndian.PutUint16(buff[8:10], uint16(18))                                         // Api Version
+	binary.BigEndian.PutUint32(buff[:4], 0)                                                    // Message Size
+	binary.BigEndian.PutUint32(buff[4:8], binary.BigEndian.Uint32(inputRequestData[8:12]))     //correlationid
+	binary.BigEndian.PutUint16(buff[8:10], uint16(validateApiVersion(inputRequestData, buff))) // Error code
+	binary.BigEndian.PutUint16(buff[8:10], uint16(18))                                         // Api Version
 	conn.Write(buff)
 }
 
