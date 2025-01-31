@@ -56,6 +56,7 @@ func parseRequest(conn net.Conn, buff []byte) {
 	binary.BigEndian.PutUint32(buff[:4], 0)                                                    // Message Size
 	binary.BigEndian.PutUint32(buff[4:8], binary.BigEndian.Uint32(inputRequestData[8:12]))     //
 	binary.BigEndian.PutUint16(buff[8:10], uint16(validateApiVersion(inputRequestData, buff))) // Api Version
+	binary.BigEndian.PutUint16(buff[8:10], uint16(18))                                         // Api Version
 	conn.Write(buff)
 }
 
