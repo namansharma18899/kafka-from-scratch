@@ -1,7 +1,6 @@
-[![progress-banner](https://backend.codecrafters.io/progress/kafka/9fd3bf1e-d491-42bb-94df-9c38715e5bcc)](https://app.codecrafters.io/users/codecrafters-bot?r=2qF)
+<!-- [![progress-banner](https://backend.codecrafters.io/progress/kafka/9fd3bf1e-d491-42bb-94df-9c38715e5bcc)](https://app.codecrafters.io/users/codecrafters-bot?r=2qF) -->
 
-This is a starting point for Go solutions to the
-["Build Your Own Kafka" Challenge](https://codecrafters.io/challenges/kafka).
+["Build Your Own Kafka" Challenge]
 
 In this challenge, you'll build a toy Kafka clone that's capable of accepting
 and responding to APIVersions & Fetch API requests. You'll also learn about
@@ -32,3 +31,15 @@ Note: This section is for stages 2 and beyond.
    `app/server.go`.
 1. Commit your changes and run `git push origin master` to submit your solution
    to CodeCrafters. Test output will be streamed to your terminal.
+
+# Testing the broker
+
+Run the integration tests (they start an in-process broker and exercise ApiVersions, Metadata, Produce, and Fetch):
+
+```sh
+go test -v ./app/
+```
+
+# Graceful shutdown
+
+Stop the broker with **Ctrl+C** (SIGINT) or send **SIGTERM**. The server will stop accepting new connections, wait up to 5 seconds for in-flight connections to finish, then exit.
